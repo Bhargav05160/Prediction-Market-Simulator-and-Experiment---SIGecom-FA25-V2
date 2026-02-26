@@ -3,6 +3,10 @@ import EventPage from './EventPage';
 import Line_Graph from '../components/Line_Graph';
 import { getEvents } from '../data/DataHandler';
 import MainPageEvent from '../components/MainPageEvent';
+import MainHeader from '../components/MainHeader';
+import Note from './Note';
+
+// Main page of the webapp
 
 function App() {
   const [page, setPage] = useState('home');
@@ -22,6 +26,8 @@ function App() {
     fetchEvents();
   }, []);
 
+  // Function to navigate to an event page when an event is clicked on the main page
+  // Passed into the MainPageEvent component, which then calls the function when the button is pressed.
   function goToEvent(id, name) {
     setEventId(id);
     setPage('event');
@@ -29,17 +35,38 @@ function App() {
   }
 
   if (page === 'event') return (
-    <EventPage onNavigate={setPage} eventId={eventId} eventName={eventName} />
-);
-
-  return (
     <div>
-      <h1>Home Site</h1>
-      {events.map(event => (
-        <MainPageEvent key={event.id} eventId={event.id} eventName={event.name} />
-      ))}
+      <MainHeader goHome={() => setPage('home')} />
+      <EventPage onNavigate={setPage} eventId={eventId} eventName={eventName} />
+    </div>
+  );
+
+  if (page === 'info') return (
+    <div>
+      <MainHeader goHome={() => setPage('home')} />
+      <Note />
     </div>
   )
+  // Add a header to diff pages like info/privacy_notes
+  return (
+    <div>
+      <MainHeader goHome={() => setPage('home')} />
+
+      <div style={{ textAlign: 'center', fontSize: '1.5em', marginBottom: '16px' }}>
+        SigEcom text text text SigEcom
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 500px)', gap: '16px', margin: '0 auto', width: 'fit-content' }}>
+        {events.map(event => (
+          <MainPageEvent key={event.id} eventId={event.id} eventName={event.name} goToEvent={goToEvent} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+const styles = {
+
 }
 
 export default App

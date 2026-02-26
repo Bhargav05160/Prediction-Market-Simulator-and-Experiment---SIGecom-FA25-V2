@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { getEventById } from '../data/DataHandler';
+import EventButton from '../components/EventButton';
 
 // Page to display a specific event, including a line graph of the betting odds over time
+
 function EventPage({ onNavigate, eventId, eventName }) {
   const [eventData, setEventData] = React.useState(null);
 
@@ -16,12 +18,11 @@ function EventPage({ onNavigate, eventId, eventName }) {
     };
     fetchEvents();
   }, [eventId]);
-
+  
   return (
-    <div>
+    <div >
       <h1>{ eventName }</h1>
-      <button onClick={() => onNavigate('home')}>Go to Home</button>
-      <br />
+      <EventButton onClick={() => onNavigate('home')} text="Go to Home" />
       <p>Event ID: {eventId} </p>
     </div>
   )
