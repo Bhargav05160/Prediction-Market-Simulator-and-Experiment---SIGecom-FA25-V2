@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import Line_Graph from './Line_Graph';
 import { getEventById } from '../data/DataHandler';
+import EventButton from './EventButton';
 
 // Component to display an event on the main page, including a line graph of the betting odds over time
-function MainPageEvent({ eventId, eventName }) {
+function MainPageEvent({ eventId, eventName, goToEvent }) {
   const [eventData, setEventData] = React.useState([]);
 
   useEffect(() => {
@@ -19,17 +20,19 @@ function MainPageEvent({ eventId, eventName }) {
   }, [eventId]);
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: '16px', marginBottom: '16px', width: '33%', height: '33%' }}>
+    <div style={{ border: '1px solid #ccc', padding: '8px', marginBottom: '8px', width: '100%' }}>
       <h2 style={{textAlign: 'center'}}>{ eventName }</h2>
-      <div style={{ maxWidth: '600px', marginBottom: '16px'}}>
+      <div style={{ maxWidth: '600px', marginBottom: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
         <Line_Graph eventData={eventData} />
-          <button key={eventId} onClick={() => goToEvent(eventId, eventName)} style={{ textAlign: 'center' }}>
-            {eventName}
-          </button>
+          <EventButton key={eventId} onClick={() => goToEvent(eventId, eventName)} text={eventName} />
       </div>
     </div>
   )
 
 }
+
+const styles = {
+
+};
 
 export default MainPageEvent;
