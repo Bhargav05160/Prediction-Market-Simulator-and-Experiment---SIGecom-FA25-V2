@@ -5,6 +5,7 @@ import { getEvents } from '../data/DataHandler';
 import MainPageEvent from '../components/MainPageEvent';
 import MainHeader from '../components/MainHeader';
 import Note from './Note';
+import Terms_PopUp from '../components/Terms_PopUp';
 
 // Main page of the webapp
 
@@ -13,6 +14,7 @@ function App() {
   const [eventId, setEventId] = useState(null);
   const [eventName, setEventName] = useState(null);
   const [events, setEvents] = useState([]);
+  const [popupOpen, setPopupOpen] = useState(!localStorage.getItem('visited'));
 
   useEffect(() => {
     const fetchEvents = () => {
@@ -34,33 +36,56 @@ function App() {
     setEventName(name);
   }
 
-  if (page === 'event') return (
-    <div>
-      <MainHeader goHome={() => setPage('home')} />
-      <EventPage onNavigate={setPage} eventId={eventId} eventName={eventName} />
-    </div>
-  );
+  function closeAgreementPopup() {
+    localStorage.setItem('visited', 'true');
+    setPopupOpen(false);
+  }
 
-  if (page === 'info') return (
-    <div>
-      <MainHeader goHome={() => setPage('home')} />
-      <Note />
-    </div>
-  )
-  // Add a header to diff pages like info/privacy_notes
+  function goToTerms() {
+    setPopupOpen(false);
+    setPage('info');
+  }
+
   return (
     <div>
       <MainHeader goHome={() => setPage('home')} />
+      <Terms_PopUp isOpen={popupOpen} onClose={closeAgreementPopup} closeButton_name="I understand" >
+        <h2>Welcome</h2>
+        <p>
+          By continuing, you agree to the{' '}
+          <button onClick={goToTerms} style={{ background: 'none', border: 'none', color: '#1a56db', cursor: 'pointer', padding: 0, textDecoration: 'underline', fontSize: 'inherit' }}>
+            terms
+          </button>
+          {' '}of this experiment.
+        </p>
+      </Terms_PopUp>
 
-      <div style={{ textAlign: 'center', fontSize: '1.5em', marginBottom: '16px' }}>
-        SigEcom text text text SigEcom
-      </div>
+      {page === 'event' && (
+        <EventPage onNavigate={setPage} eventId={eventId} eventName={eventName} />
+      )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 500px)', gap: '16px', margin: '0 auto', width: 'fit-content' }}>
-        {events.map(event => (
-          <MainPageEvent key={event.id} eventId={event.id} eventName={event.name} goToEvent={goToEvent} />
-        ))}
-      </div>
+      {page === 'info' && <Note />}
+
+      {page === 'home' && (
+        <>
+          <div style={{ textAlign: 'center', fontSize: '1.5em', marginBottom: '16px' }}>
+            SigEcom text text text SigEcom
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 500px)', gap: '16px', margin: '0 auto', width: 'fit-content' }}>
+            {events.map(event => (
+              <MainPageEvent key={event.id} eventId={event.id} eventName={event.name} goToEvent={goToEvent} />
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* DEV ONLY — remove before production */}
+      <button
+        onClick={() => { localStorage.removeItem('visited'); setPopupOpen(true); }}
+        style={{ position: 'fixed', bottom: '12px', right: '12px', fontSize: '0.75em', opacity: 0.5 }}
+      >
+        [dev] show popup
+      </button>
     </div>
   )
 }

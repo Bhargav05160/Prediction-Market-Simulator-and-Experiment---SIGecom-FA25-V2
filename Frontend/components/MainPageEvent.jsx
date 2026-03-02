@@ -23,7 +23,7 @@ function MainPageEvent({ eventId, eventName, goToEvent }) {
     <div style={{ border: '1px solid #ccc', padding: '8px', marginBottom: '8px', width: '100%' }}>
       <h2 style={{textAlign: 'center'}}>{ eventName }</h2>
       <div style={{ maxWidth: '600px', marginBottom: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-        <Line_Graph eventData={eventData} />
+        {eventData.length > 0 && <Line_Graph eventData={eventData} />}
           <EventButton key={eventId} onClick={() => goToEvent(eventId, eventName)} text={eventName} />
       </div>
     </div>
