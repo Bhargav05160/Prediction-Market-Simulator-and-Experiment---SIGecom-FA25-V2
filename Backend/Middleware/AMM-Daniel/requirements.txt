@@ -1,0 +1,18 @@
+# This file suggests potential Python dependencies for a future implementation
+# of the coin flip prediction market AMM. There is intentionally NO code in this
+# repository; these are configuration-style entries only.
+
+# Core language/runtime
+# python~=3.11
+
+# Numerical / math utilities (optional)
+# numpy==2.2.0
+
+# Testing framework (optional, for when you add tests)
+# pytest==8.3.0
+
+# If you later integrate with blockchains or external services, you might add:
+# web3==6.20.1
+
+# Feel free to remove or replace these suggestions once you implement real code.
+
